@@ -16,6 +16,7 @@ using Argos.Core.Pivot;
 using Argos.Core.Storage;
 using Argos.App.Ui;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace Argos.App;
 
@@ -86,11 +87,23 @@ public partial class MainWindow : Window {
         }
     }
 
+    static string Extract(string raw) {
+        var m = Regex.Match(raw ?? "", @"[\w\-]{20,}\.[\w\-]{5,}\.[\w\-]{20,}");
+        return m.Success ? m.Value : (raw ?? "").Trim();
+    }
+
+    void OnPaste(object s, RoutedEventArgs e) {
+        var t = Extract(Clipboard.GetText());
+        if (t.Length < 20) { MessageBox.Show("Presse-papiers vide ou token incomplet.", "Argos"); return; }
+        TokenBox.Password = t;
+        OnToken(s, e);
+    }
+
     async void OnToken(object s, RoutedEventArgs e) {
-        var t = TokenBox.Password.Trim();
+        var t = Extract(TokenBox.Password);
         if (t.Length == 0) return;
         api.SetToken(t);
-        TokenState.Text = "verification...";
+        TokenState.Text = "verification... (" + t.Length + " car.)";
         await Verify(t);
         TokenBox.Clear();
     }
@@ -192,6 +205,7 @@ public partial class MainWindow : Window {
         Say("export ok");
     }
 }
+
 
 
 

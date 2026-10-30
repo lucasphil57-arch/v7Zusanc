@@ -30,6 +30,7 @@
           <TextBlock DockPanel.Dock="Left" Text="TOKEN DISCORD" Foreground="{StaticResource Dim}" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center" Width="110"/>
           <TextBlock x:Name="TokenState" DockPanel.Dock="Right" Text="absent" Foreground="{StaticResource Dim}" VerticalAlignment="Center" FontSize="10.5" Margin="10,0,0,0" MinWidth="120"/>
           <Button DockPanel.Dock="Right" Content="Verifier" Margin="8,0,0,0" Click="OnToken"/>
+          <Button DockPanel.Dock="Right" Content="Coller" Margin="8,0,0,0" Click="OnPaste"/>
           <PasswordBox x:Name="TokenBox" Padding="9,6" Background="{StaticResource Card}" Foreground="{StaticResource Fg}" BorderBrush="{StaticResource Line}" FontFamily="Consolas" FontSize="11" KeyDown="OnTokenKey"/>
         </DockPanel>
       </StackPanel>
@@ -91,3 +92,4 @@
     </Border>
   </Grid>
 </Window>
+
