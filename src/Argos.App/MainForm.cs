@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -137,7 +137,7 @@ public class MainForm : Form {
         if (piv.SelectedItem is not Pivot p) return;
         if (p.Kind == "lien") { Open(p.Url); return; }
         if (!mods.TryGetValue(p.Module, out var c)) return;
-        var e = data[cur].Entries[p.Index];
+        var e = data[cur].Entries[p.EntryIndex];
         Say(p.Module + " demarre");
         _ = Task.Run(async () => {
             try {
