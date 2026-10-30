@@ -42,6 +42,7 @@ public partial class MainWindow : Window {
     List<Dossier> data;
     int cur = -1;
     bool syncing;
+    bool hasToken;
     static readonly NodeType[] Map = { NodeType.DiscordId, NodeType.Username, NodeType.Email, NodeType.Phone, NodeType.RealName, NodeType.Address };
     static readonly Brush B_DIM = new SolidColorBrush(Color.FromRgb(88, 97, 110));
     static readonly Brush B_ACC = new SolidColorBrush(Color.FromRgb(88, 101, 242));
@@ -75,6 +76,7 @@ public partial class MainWindow : Window {
             var who = await api.WhoAmI();
             TokenState.Text = "connecte : " + who;
             TokenState.Foreground = B_OK;
+            hasToken = true;
             TokenStore.Save(t);
         } catch (Exception ex) {
             TokenState.Text = "token invalide";
@@ -154,6 +156,7 @@ public partial class MainWindow : Window {
         if (PivotList.SelectedItem is not PivotRow row) return;
         var p = row.P;
         if (p.Kind == "lien") { Open(p.Url); return; }
+        if (!hasToken) { Say("token absent : colle-le en haut a droite puis Verifier"); return; }
         if (!mods.TryGetValue(p.Module, out var collector)) return;
         var entry = data[cur].Entries[p.EntryIndex];
         Say(p.Module + " demarre");
@@ -186,3 +189,5 @@ public partial class MainWindow : Window {
         Say("export ok");
     }
 }
+
+

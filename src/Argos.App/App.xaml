@@ -36,5 +36,28 @@
       <Setter Property="Foreground" Value="{StaticResource Fg}"/>
       <Setter Property="Padding" Value="6,6"/>
     </Style>
+    <Style TargetType="ComboBox">
+      <Setter Property="Background" Value="{StaticResource Card}"/>
+      <Setter Property="Foreground" Value="{StaticResource Fg}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBox">
+            <Border Background="{StaticResource Card}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="6">
+              <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                <ContentPresenter Grid.Column="0" Content="{TemplateBinding SelectionBoxItem}" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                <Path Grid.Column="1" Data="M0,0 L4,4 L8,0" Stroke="{StaticResource Dim}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Grid>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Foreground" Value="{StaticResource Fg}"/>
+      <Setter Property="Background" Value="{StaticResource Panel}"/>
+      <Setter Property="Padding" Value="10,6"/>
+    </Style>
   </Application.Resources>
 </Application>
+
