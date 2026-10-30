@@ -23,14 +23,13 @@ public class Card {
     public string Header { get; set; }
     public string Value { get; set; }
     public string Source { get; set; }
-    public NodeType Type { get; set; }
+    public Brush Accent { get; set; }
 }
 
 public class PivotRow {
     public Pivot P { get; set; }
     public string Label => P.Label;
-    public string Why => P.Why;
-    public string YieldText => ((int)(P.Yield * 100)) + "%";
+    public string Sub => ((int)(P.Yield * 100)) + "%   " + P.Why;
 }
 
 public partial class MainWindow : Window {
@@ -43,8 +42,13 @@ public partial class MainWindow : Window {
     List<Dossier> data;
     int cur = -1;
     bool syncing;
-
     static readonly NodeType[] Map = { NodeType.DiscordId, NodeType.Username, NodeType.Email, NodeType.Phone, NodeType.RealName, NodeType.Address };
+    static readonly Brush B_DIM = new SolidColorBrush(Color.FromRgb(88, 97, 110));
+    static readonly Brush B_ACC = new SolidColorBrush(Color.FromRgb(88, 101, 242));
+    static readonly Brush B_WARN = new SolidColorBrush(Color.FromRgb(245, 158, 11));
+    static readonly Brush B_OK = new SolidColorBrush(Color.FromRgb(34, 197, 94));
+    static readonly Brush B_RED = new SolidColorBrush(Color.FromRgb(239, 68, 68));
+    static readonly Brush B_VIO = new SolidColorBrush(Color.FromRgb(139, 92, 246));
 
     public MainWindow() {
         InitializeComponent();
@@ -70,11 +74,11 @@ public partial class MainWindow : Window {
         try {
             var who = await api.WhoAmI();
             TokenState.Text = "connecte : " + who;
-            TokenState.Foreground = new SolidColorBrush(Color.FromRgb(34, 197, 94));
+            TokenState.Foreground = B_OK;
             TokenStore.Save(t);
         } catch (Exception ex) {
             TokenState.Text = "token invalide";
-            TokenState.Foreground = new SolidColorBrush(Color.FromRgb(239, 68, 68));
+            TokenState.Foreground = B_RED;
             Say("token erreur : " + ex.Message);
         }
     }
@@ -106,20 +110,27 @@ public partial class MainWindow : Window {
         foreach (var d in data) caseLabels.Add(d.Name + "   " + d.Entries.Count);
         if (cur >= 0 && cur < caseLabels.Count) CaseList.SelectedIndex = cur;
         syncing = false;
-
         cards.Clear();
         pivotRows.Clear();
         EmptyText.Visibility = Visibility.Visible;
         if (cur < 0 || cur >= data.Count) return;
         if (data[cur].Entries.Count == 0) return;
-
         EmptyText.Visibility = Visibility.Collapsed;
         foreach (var en in data[cur].Entries)
-            cards.Add(new Card { Header = (en.Module + "  /  " + en.Key).ToLower(), Value = en.Value, Source = en.Source, Type = en.Type });
+            cards.Add(new Card { Header = (en.Module + "  /  " + en.Key).ToLower(), Value = en.Value, Source = en.Source, Accent = AccentOf(en.Type) });
         foreach (var p in PivotEngine.Suggest(data[cur]))
             pivotRows.Add(new PivotRow { P = p });
         StatusText.Text = data[cur].Entries.Count + " entites";
     }
+
+    static Brush AccentOf(NodeType t) => t switch {
+        NodeType.DiscordId => B_ACC,
+        NodeType.Email => B_WARN,
+        NodeType.Phone => B_OK,
+        NodeType.RealName => B_RED,
+        NodeType.Username => B_VIO,
+        _ => B_DIM
+    };
 
     void OnSeedKey(object s, KeyEventArgs e) { if (e.Key == Key.Enter) { AddSeed(); e.Handled = true; } }
     void OnSeed(object s, RoutedEventArgs e) => AddSeed();
@@ -175,4 +186,3 @@ public partial class MainWindow : Window {
         Say("export ok");
     }
 }
-
