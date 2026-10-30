@@ -10,26 +10,29 @@
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Border Grid.Row="0" Background="{StaticResource Panel}" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="16,12">
-      <DockPanel>
-        <TextBlock DockPanel.Dock="Left" Text="ARGOS" Foreground="{StaticResource Acc}" FontSize="17" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,18,0"/>
-        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-          <TextBlock x:Name="TokenState" Text="token absent" Foreground="{StaticResource Dim}" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="11"/>
-          <PasswordBox x:Name="TokenBox" Width="220" Padding="9,7" Background="{StaticResource Card}" Foreground="{StaticResource Fg}" BorderBrush="{StaticResource Line}" FontSize="11"/>
-          <Button Content="Verifier" Margin="8,0,0,0" Click="OnToken"/>
-        </StackPanel>
-        <ComboBox x:Name="TypeBox" Width="128" SelectedIndex="0" Margin="0,0,8,0" Background="{StaticResource Card}" Foreground="{StaticResource Fg}" FontSize="12">
-          <ComboBoxItem Content="ID Discord"/>
-          <ComboBoxItem Content="Pseudo"/>
-          <ComboBoxItem Content="Email"/>
-          <ComboBoxItem Content="Telephone"/>
-          <ComboBoxItem Content="Nom"/>
-          <ComboBoxItem Content="Adresse"/>
-        </ComboBox>
-        <Button Content="Export" DockPanel.Dock="Right" Margin="8,0,0,0" Click="OnExport"/>
-        <Button Content="Lancer" DockPanel.Dock="Right" Margin="8,0,0,0" Background="{StaticResource Acc}" Foreground="White" BorderThickness="0" FontWeight="SemiBold" Click="OnSeed"/>
-        <TextBox x:Name="SeedBox" FontFamily="Consolas" KeyDown="OnSeedKey"/>
-      </DockPanel>
+    <Border Grid.Row="0" Background="{StaticResource Panel}" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="16,10">
+      <StackPanel>
+        <DockPanel Margin="0,0,0,8">
+          <TextBlock DockPanel.Dock="Left" Text="ARGOS" Foreground="{StaticResource Acc}" FontSize="17" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,18,0"/>
+          <Button Content="Export" DockPanel.Dock="Right" Margin="8,0,0,0" Click="OnExport"/>
+          <Button Content="Lancer" DockPanel.Dock="Right" Margin="8,0,0,0" Background="{StaticResource Acc}" Foreground="White" BorderThickness="0" FontWeight="SemiBold" Click="OnSeed"/>
+          <ComboBox x:Name="TypeBox" Width="128" SelectedIndex="0" Margin="0,0,8,0">
+            <ComboBoxItem Content="ID Discord"/>
+            <ComboBoxItem Content="Pseudo"/>
+            <ComboBoxItem Content="Email"/>
+            <ComboBoxItem Content="Telephone"/>
+            <ComboBoxItem Content="Nom"/>
+            <ComboBoxItem Content="Adresse"/>
+          </ComboBox>
+          <TextBox x:Name="SeedBox" FontFamily="Consolas" KeyDown="OnSeedKey"/>
+        </DockPanel>
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Left" Text="TOKEN DISCORD" Foreground="{StaticResource Dim}" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center" Width="110"/>
+          <TextBlock x:Name="TokenState" DockPanel.Dock="Right" Text="absent" Foreground="{StaticResource Dim}" VerticalAlignment="Center" FontSize="10.5" Margin="10,0,0,0" MinWidth="120"/>
+          <Button DockPanel.Dock="Right" Content="Verifier" Margin="8,0,0,0" Click="OnToken"/>
+          <PasswordBox x:Name="TokenBox" Padding="9,6" Background="{StaticResource Card}" Foreground="{StaticResource Fg}" BorderBrush="{StaticResource Line}" FontFamily="Consolas" FontSize="11" KeyDown="OnTokenKey"/>
+        </DockPanel>
+      </StackPanel>
     </Border>
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
@@ -51,10 +54,7 @@
               <DataTemplate>
                 <Border Background="{StaticResource Card}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,8">
                   <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="3"/>
-                      <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="3"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                     <Rectangle Grid.Column="0" Fill="{Binding Accent}"/>
                     <StackPanel Grid.Column="1" Margin="12,9,12,9">
                       <TextBlock Text="{Binding Header}" Foreground="{StaticResource Dim}" FontSize="9.5" FontWeight="SemiBold"/>
@@ -70,11 +70,7 @@
       </ScrollViewer>
       <Border Grid.Column="2" Background="{StaticResource Panel}" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0">
         <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="170"/>
-          </Grid.RowDefinitions>
+          <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="170"/></Grid.RowDefinitions>
           <TextBlock Grid.Row="0" Text="PIVOTS" Foreground="{StaticResource Dim}" FontSize="10" FontWeight="Bold" Margin="14,12,0,8"/>
           <ListBox x:Name="PivotList" Grid.Row="1" MouseDoubleClick="OnPivot">
             <ListBox.ItemTemplate>

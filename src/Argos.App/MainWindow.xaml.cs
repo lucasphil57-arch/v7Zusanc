@@ -79,7 +79,8 @@ public partial class MainWindow : Window {
             hasToken = true;
             TokenStore.Save(t);
         } catch (Exception ex) {
-            TokenState.Text = "token invalide";
+            TokenState.Text = "invalide";
+            MessageBox.Show("Token refuse par Discord." + Environment.NewLine + ex.Message, "Argos");
             TokenState.Foreground = B_RED;
             Say("token erreur : " + ex.Message);
         }
@@ -93,6 +94,8 @@ public partial class MainWindow : Window {
         await Verify(t);
         TokenBox.Clear();
     }
+
+    void OnTokenKey(object s, KeyEventArgs e) { if (e.Key == Key.Enter) { OnToken(s, e); e.Handled = true; } }
 
     void OnNewCase(object s, RoutedEventArgs e) {
         data.Add(new Dossier { Name = "dossier " + DateTime.Now.ToString("dd/MM HH:mm") });
@@ -189,5 +192,7 @@ public partial class MainWindow : Window {
         Say("export ok");
     }
 }
+
+
 
 
